@@ -108,17 +108,21 @@
     const winnerName = document.getElementById('winner-name');
 
     function updateUI() {
-        if (roundCandidates.length === 1 && nextRoundCandidates.length === 0) {
-            // Final winner is determined
+        if (roundCandidates.length === 1) {
+            // 최종 우승자 결정
             showWinner(roundCandidates[0]);
             return;
         }
 
         if (roundIndex >= roundCandidates.length) {
-            // New round starts
+            // 현재 라운드 종료, 다음 라운드로 전환
+            if (roundCandidates.length % 2 !== 0) {
+                // 후보 수가 홀수일 경우 남은 한 명을 다음 라운드에 추가
+                nextRoundCandidates.push(roundCandidates[roundCandidates.length - 1]);
+            }
             roundCandidates = [...nextRoundCandidates];
             nextRoundCandidates = [];
-            currentRound = currentRound / 2;
+            currentRound = roundCandidates.length;
             roundIndex = 0;
             titleEl.innerText = `핑구 이상형 월드컵 (${currentRound}강)`;
         }
@@ -126,18 +130,12 @@
         const candidate1 = roundCandidates[roundIndex];
         const candidate2 = roundCandidates[roundIndex + 1];
 
+        // 후보가 없거나 한 명만 남은 경우 게임 종료 또는 다음 라운드 처리
         if (!candidate1 || !candidate2) {
-            // This can happen if the number of candidates is not a power of 2
-            // Just move the single remaining candidate to the next round.
-            if (candidate1) {
-                nextRoundCandidates.push(candidate1);
-            }
-            if (candidate2) {
-                 nextRoundCandidates.push(candidate2);
-            }
-            roundIndex += 2;
-            updateUI();
-            return;
+             // 이 로직은 위에서 이미 처리되므로, 사실상 이 블록에 들어올 일은 없음
+             // 하지만 혹시 모를 경우를 대비하여 다음 라운드로 넘어가도록 함.
+             // 무한 재귀 호출 방지를 위해 updateUI() 재호출은 제거
+             return;
         }
 
         image1.src = candidate1.image;
@@ -169,7 +167,7 @@
     }
 
     function startGame() {
-        // Shuffle the candidates to make it a new game each time
+        // 후보를 무작위로 섞어 새로운 게임 시작
         roundCandidates = [...candidates].sort(() => Math.random() - 0.5);
         nextRoundCandidates = [];
         currentRound = candidates.length;
@@ -184,10 +182,11 @@
         updateUI();
     }
 
-    // Start the game on page load
+    // 페이지 로드 시 게임 시작
     window.onload = startGame;
 
 </script>
 
 </body>
 </html>
+
