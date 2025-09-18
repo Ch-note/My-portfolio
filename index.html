@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Engineer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <header class="w-full max-w-4xl text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-bold mb-2 text-white">AI Engineer Portfolio</h1>
+            <p class="text-xl text-gray-400">Completed a course in Ms ai school.</p>
+        </header>
+
+        <!-- Main Content Wrapper -->
+        <main class="w-full max-w-4xl">
+
+            <!-- Profile Section -->
+            <section id="profile" class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg mb-8 transition-transform transform hover:scale-105">
+                <div class="flex flex-col sm:flex-row items-center sm:space-x-8">
+                    <img src="https://placehold.co/120x120/4b5563/ffffff?text=Profile" alt="Profile Picture" class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-gray-600 mb-4 sm:mb-0">
+                    <div class="text-center sm:text-left">
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-white mb-2">Chaeheon Kong</h2>
+                        <p class="text-lg text-gray-400">AI Engineer | Machine Learning Specialist</p>
+                        <p class="mt-2 text-sm text-gray-300">
+                            안녕하세요! 저는 데이터 기반 솔루션을 구축하고 혁신적인 AI 모델을 개발하는 AI 엔지니어입니다.
+                            머신러닝, 딥러닝, 자연어 처리(NLP) 등 다양한 분야에 대한 깊은 이해를 바탕으로 복잡한 문제를 해결하는 데 열정을 가지고 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="mb-8">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center sm:text-left">프로젝트</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Project Card 1 -->
+                    <div class="bg-gray-800 p-6 rounded-2xl shadow-lg transition-transform transform hover:scale-105">
+                        <h3 class="text-xl font-semibold text-white mb-2">프로젝트 제목 1</h3>
+                        <p class="text-sm text-gray-400 mb-4">자연어 처리 기반 챗봇 개발</p>
+                        <p class="text-gray-300 text-sm">
+                            Transformer 모델을 활용하여 고객 문의에 답변하는 챗봇을 개발했습니다.
+                            BERT와 GPT-2를 fine-tuning하여 높은 정확도를 달성했습니다.
+                        </p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">Python</span>
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">PyTorch</span>
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">NLP</span>
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">GPT-2</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="bg-gray-800 p-6 rounded-2xl shadow-lg transition-transform transform hover:scale-105">
+                        <h3 class="text-xl font-semibold text-white mb-2">프로젝트 제목 2</h3>
+                        <p class="text-sm text-gray-400 mb-4">이미지 분류 모델 최적화</p>
+                        <p class="text-gray-300 text-sm">
+                            ResNet-50 기반의 모델을 경량화하고 최적화하여 모바일 환경에서 실시간으로 이미지를 분류하는 애플리케이션을 만들었습니다.
+                        </p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Python</span>
+                            <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">TensorFlow</span>
+                            <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Computer Vision</span>
+                            <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">ResNet-50</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4 text-center sm:text-left">기술 스택</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center">
+                    <div class="p-3 bg-gray-700 rounded-lg">Python</div>
+                    <div class="p-3 bg-gray-700 rounded-lg">TensorFlow</div>
+                    <div class="p-3 bg-gray-700 rounded-lg">PyTorch</div>
+                    <div class="p-3 bg-gray-700 rounded-lg">Scikit-learn</div>
+                    <div class="p-3 bg-gray-700 rounded-lg">NumPy</div>
+                    <div class="p-3 bg-gray-700 rounded-lg">Pandas</div>
+                    <div class="p-3 bg-gray-700 rounded-lg">SQL</div>
+                    <div class="p-3 bg-gray-700 rounded-lg">Git</div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg text-center">
+                <h2 class="text-2xl font-bold text-white mb-4">연락처</h2>
+                <p class="text-gray-300 mb-4">더 궁금한 점이 있으시면 언제든지 연락 주세요!</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="mailto:your.email@example.com" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300">
+                        Email
+                    </a>
+                    <a href="https://github.com/your-username" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300">
+                        GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/your-profile" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300">
+                        LinkedIn
+                    </a>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</body>
+</html>
