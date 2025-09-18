@@ -108,33 +108,32 @@
     const winnerName = document.getElementById('winner-name');
 
     function updateUI() {
-        if (roundCandidates.length === 1) {
-            // 최종 우승자 결정
+        // 최종 우승자 결정
+        if (roundCandidates.length === 1 && nextRoundCandidates.length === 0) {
             showWinner(roundCandidates[0]);
             return;
         }
 
+        // 현재 라운드 종료, 다음 라운드로 전환
         if (roundIndex >= roundCandidates.length) {
-            // 현재 라운드 종료, 다음 라운드로 전환
-            if (roundCandidates.length % 2 !== 0) {
-                // 후보 수가 홀수일 경우 남은 한 명을 다음 라운드에 추가
-                nextRoundCandidates.push(roundCandidates[roundCandidates.length - 1]);
-            }
             roundCandidates = [...nextRoundCandidates];
             nextRoundCandidates = [];
             currentRound = roundCandidates.length;
             roundIndex = 0;
             titleEl.innerText = `핑구 이상형 월드컵 (${currentRound}강)`;
+            // 다음 라운드를 시작하기 위해 updateUI를 재귀 호출
+            updateUI();
+            return;
         }
 
         const candidate1 = roundCandidates[roundIndex];
         const candidate2 = roundCandidates[roundIndex + 1];
 
-        // 후보가 없거나 한 명만 남은 경우 게임 종료 또는 다음 라운드 처리
-        if (!candidate1 || !candidate2) {
-             // 이 로직은 위에서 이미 처리되므로, 사실상 이 블록에 들어올 일은 없음
-             // 하지만 혹시 모를 경우를 대비하여 다음 라운드로 넘어가도록 함.
-             // 무한 재귀 호출 방지를 위해 updateUI() 재호출은 제거
+        // 후보가 홀수일 경우 남은 한 명을 다음 라운드에 자동 진출
+        if (!candidate2) {
+             nextRoundCandidates.push(candidate1);
+             roundIndex += 1;
+             updateUI();
              return;
         }
 
@@ -189,4 +188,3 @@
 
 </body>
 </html>
-
