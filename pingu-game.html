@@ -5,253 +5,189 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>핑구 이상형 월드컵</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Jua', sans-serif;
+            background-color: #f0f4f8;
+            color: #2c3e50;
         }
-        .vs-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background-color: #ef4444; /* red-500 */
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            border: 4px solid white;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .candidate-card {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
             cursor: pointer;
+            overflow: hidden;
         }
-        .candidate-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
         }
-        .winner-card {
-            animation: winner-pop 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        .image-container {
+            width: 100%;
+            padding-top: 100%; /* 1:1 Aspect Ratio */
+            position: relative;
         }
-        @keyframes winner-pop {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-    <div id="game-container" class="w-full max-w-4xl text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-2 text-yellow-300">🐧 핑구 이상형 월드컵 🐧</h1>
-        <h2 id="round-title" class="text-2xl md:text-3xl mb-8 text-gray-300">준비...</h2>
-
-        <!-- 게임 진행 화면 -->
-        <div id="match-up" class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <!-- 참가자 1 -->
-            <div id="candidate-1" class="candidate-card bg-gray-800 rounded-2xl p-4 border-4 border-transparent">
-                <!-- 
-                    TODO: 여기에 첫 번째 참가자 이미지 추가
-                    예시: <img src="pingu.jpg" alt="핑구" class="w-full h-64 md:h-96 object-cover rounded-lg mb-4">
-                -->
-                <div id="image-1" class="w-full h-64 md:h-96 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
-                    이미지 1
-                </div>
-                <p id="name-1" class="text-2xl font-semibold">참가자 1</p>
+<div class="container text-center">
+    <h1 id="title" class="text-4xl font-bold mb-8">핑구 이상형 월드컵 (8강)</h1>
+    <div id="game-container" class="flex flex-col md:flex-row items-center justify-center gap-6">
+        <div id="card1" class="card w-full md:w-1/2 p-4 text-center">
+            <div class="image-container rounded-lg mb-4">
+                <img id="image1" src="" alt="Pingu Character 1" class="rounded-lg">
             </div>
-
-            <!-- VS 표시 -->
-            <div class="vs-circle hidden md:flex">VS</div>
-            
-            <!-- 참가자 2 -->
-            <div id="candidate-2" class="candidate-card bg-gray-800 rounded-2xl p-4 border-4 border-transparent">
-                 <!-- 
-                    TODO: 여기에 두 번째 참가자 이미지 추가
-                    예시: <img src="pinga.jpg" alt="핑가" class="w-full h-64 md:h-96 object-cover rounded-lg mb-4">
-                -->
-                <div id="image-2" class="w-full h-64 md:h-96 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
-                    이미지 2
-                </div>
-                <p id="name-2" class="text-2xl font-semibold">참가자 2</p>
-            </div>
+            <p id="name1" class="text-xl font-semibold"></p>
         </div>
-
-        <!-- 최종 우승 화면 -->
-        <div id="winner-screen" class="hidden text-center">
-            <h2 class="text-4xl font-bold text-yellow-400 mb-6">🏆 최종 우승! 🏆</h2>
-            <div class="inline-block winner-card bg-gray-800 rounded-2xl p-6 border-4 border-yellow-400 shadow-lg">
-                <!-- 
-                    TODO: 여기에 우승자 이미지 표시
-                    자바스크립트가 자동으로 설정하지만, 필요시 수정
-                -->
-                <div id="winner-image" class="w-64 h-64 md:w-96 md:h-96 bg-gray-700 rounded-lg mb-4 mx-auto flex items-center justify-center text-gray-400">
-                    우승자 이미지
-                </div>
-                <p id="winner-name" class="text-3xl font-bold">우승자 이름</p>
+        <p id="vs-text" class="text-3xl font-bold md:mb-0 mb-4">VS</p>
+        <div id="card2" class="card w-full md:w-1/2 p-4 text-center">
+            <div class="image-container rounded-lg mb-4">
+                <img id="image2" src="" alt="Pingu Character 2" class="rounded-lg">
             </div>
-            <button onclick="location.reload()" class="mt-8 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform duration-200 hover:scale-105">
-                다시 시작하기
-            </button>
+            <p id="name2" class="text-xl font-semibold"></p>
         </div>
     </div>
+    <div id="result-container" class="hidden mt-8 text-center">
+        <h2 class="text-3xl font-bold mb-4">최종 우승자</h2>
+        <div class="card p-6 inline-block">
+            <div class="image-container rounded-lg mb-4 w-64 h-64">
+                <img id="winner-image" src="" alt="Winner" class="rounded-lg">
+            </div>
+            <p id="winner-name" class="text-2xl font-bold"></p>
+        </div>
+        <button onclick="startGame()" class="mt-8 px-6 py-3 bg-blue-500 text-white rounded-full text-lg font-bold hover:bg-blue-600 transition">다시 하기</button>
+    </div>
+</div>
 
-    <script>
-        // --- 데이터 설정 ---
-        // TODO: 참가자 목록을 수정하세요. name은 표시될 이름, id는 이미지 파일명과 연결하면 편리합니다.
-        const initialCandidates = [
-            { id: 'pingu', name: '핑구' },
-            { id: 'pinga', name: '핑가' },
-            { id: 'robby', name: '로비' },
-            { id: 'pingi', name: '핑기' },
-            { id: 'pingo', name: '핑고' },
-            { id: 'grandpa', name: '할아버지' },
-            { id: 'mom', name: '엄마' },
-            { id: 'dad', name: '아빠' },
-            // 16강을 위해 8명 더 추가 (원하는 캐릭터로 변경하세요)
-            { id: 'teacher', name: '선생님' },
-            { id: 'doctor', name: '의사 선생님' },
-            { id: 'postman', name: '우체부 아저씨' },
-            { id: 'yeti', name: '설인' },
-            { id: 'crab', name: '게' },
-            { id: 'penguin1', name: '이웃 펭귄' },
-            { id: 'penguin2', name: '친구 펭귄' },
-            { id: 'walrus', name: '바다코끼리' },
-        ];
+<script>
+    const candidates = [
+        { name: "핑구", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/pingu.jpg" },
+        { name: "핑가", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/pinga.jpg" },
+        { name: "엄격한 핑구", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/pingu_strict.jpg" },
+        { name: "화난 아빠", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/pingudad_angry.jpg" },
+        { name: "화난 핑구", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/pingu_angry.webp" },
+        { name: "행복한 핑구", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/pingu_happy.jpg" },
+        { name: "물개", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/seal_scary.webp" },
+        { name: "핑구 bye", image: "https://raw.githubusercontent.com/Ch-note/My-portfolio/refs/heads/main/images/pingu_goodbye.jpg" }
+    ];
 
-        let currentRoundCandidates = [];
-        let winners = [];
-        let currentMatchIndex = 0;
-        let totalRounds = 0;
+    let roundCandidates = [...candidates];
+    let nextRoundCandidates = [];
+    let currentRound = 8;
+    let roundIndex = 0;
 
-        const roundTitleEl = document.getElementById('round-title');
-        const matchUpEl = document.getElementById('match-up');
-        const candidate1El = document.getElementById('candidate-1');
-        const candidate2El = document.getElementById('candidate-2');
-        const name1El = document.getElementById('name-1');
-        const name2El = document.getElementById('name-2');
-        const image1El = document.getElementById('image-1');
-        const image2El = document.getElementById('image-2');
+    const titleEl = document.getElementById('title');
+    const gameContainerEl = document.getElementById('game-container');
+    const resultContainerEl = document.getElementById('result-container');
+    const vsTextEl = document.getElementById('vs-text');
+    const card1 = document.getElementById('card1');
+    const card2 = document.getElementById('card2');
+    const image1 = document.getElementById('image1');
+    const name1 = document.getElementById('name1');
+    const image2 = document.getElementById('image2');
+    const name2 = document.getElementById('name2');
+    const winnerImage = document.getElementById('winner-image');
+    const winnerName = document.getElementById('winner-name');
 
-        const winnerScreenEl = document.getElementById('winner-screen');
-        const winnerNameEl = document.getElementById('winner-name');
-        const winnerImageEl = document.getElementById('winner-image');
+    function updateUI() {
+        if (roundCandidates.length === 1 && nextRoundCandidates.length === 0) {
+            // Final winner is determined
+            showWinner(roundCandidates[0]);
+            return;
+        }
 
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        if (roundIndex >= roundCandidates.length) {
+            // New round starts
+            roundCandidates = [...nextRoundCandidates];
+            nextRoundCandidates = [];
+            currentRound = currentRound / 2;
+            roundIndex = 0;
+            titleEl.innerText = `핑구 이상형 월드컵 (${currentRound}강)`;
+        }
+
+        const candidate1 = roundCandidates[roundIndex];
+        const candidate2 = roundCandidates[roundIndex + 1];
+
+        if (!candidate1 || !candidate2) {
+            // This can happen if the number of candidates is not a power of 2
+            // Just move the single remaining candidate to the next round.
+            if (candidate1) {
+                nextRoundCandidates.push(candidate1);
             }
-            return array;
-        }
-        
-        function getImagePath(id) {
-            // TODO: 이미지 경로를 설정하세요. 
-            // 예를 들어 'images' 폴더에 'pingu.png' 처럼 저장했다면
-            // return `images/${id}.png`;
-            return `https://placehold.co/400x600/374151/E5E7EB?text=${id}`;
-        }
-
-        function displayMatch() {
-            if (currentMatchIndex >= currentRoundCandidates.length) {
-                startNextRound();
-                return;
+            if (candidate2) {
+                 nextRoundCandidates.push(candidate2);
             }
-
-            const candidate1 = currentRoundCandidates[currentMatchIndex];
-            const candidate2 = currentRoundCandidates[currentMatchIndex + 1];
-
-            name1El.textContent = candidate1.name;
-            name2El.textContent = candidate2.name;
-            
-            // 이미지 업데이트 (플레이스홀더 사용)
-            image1El.style.backgroundImage = `url(${getImagePath(candidate1.id)})`;
-            image1El.style.backgroundSize = 'cover';
-            image1El.style.backgroundPosition = 'center';
-            image1El.textContent = ''; // 이미지 로딩되면 텍스트 제거
-            
-            image2El.style.backgroundImage = `url(${getImagePath(candidate2.id)})`;
-            image2El.style.backgroundSize = 'cover';
-            image2El.style.backgroundPosition = 'center';
-            image2El.textContent = '';
-
-            matchUpEl.classList.remove('opacity-0');
+            roundIndex += 2;
+            updateUI();
+            return;
         }
 
-        function selectWinner(selectedIndex) {
-            matchUpEl.classList.add('opacity-0');
-            
-            const winner = currentRoundCandidates[currentMatchIndex + selectedIndex];
-            winners.push(winner);
-            
-            currentMatchIndex += 2;
+        image1.src = candidate1.image;
+        name1.innerText = candidate1.name;
+        image2.src = candidate2.image;
+        name2.innerText = candidate2.name;
 
-            setTimeout(() => {
-                displayMatch();
-            }, 400); // fade out 시간
-        }
-        
-        function startNextRound() {
-            if (winners.length === 1) {
-                displayWinner();
-                return;
-            }
-
-            currentRoundCandidates = shuffle([...winners]);
-            winners = [];
-            currentMatchIndex = 0;
-            totalRounds = currentRoundCandidates.length;
-
-            updateRoundTitle();
-            displayMatch();
-        }
-
-        function updateRoundTitle() {
-            if (totalRounds === 2) {
-                roundTitleEl.textContent = "대망의 결승전!";
-            } else if (totalRounds === 4) {
-                roundTitleEl.textContent = "준결승 (4강)";
-            } else {
-                roundTitleEl.textContent = `${totalRounds}강`;
-            }
-        }
-        
-        function displayWinner() {
-            const finalWinner = winners[0];
-            
-            winnerNameEl.textContent = finalWinner.name;
-            winnerImageEl.style.backgroundImage = `url(${getImagePath(finalWinner.id)})`;
-            winnerImageEl.style.backgroundSize = 'cover';
-            winnerImageEl.style.backgroundPosition = 'center';
-            winnerImageEl.textContent = '';
-
-            document.getElementById('game-container').innerHTML = winnerScreenEl.innerHTML;
-        }
-
-        function startGame() {
-            currentRoundCandidates = shuffle([...initialCandidates]);
-            totalRounds = currentRoundCandidates.length;
-            winners = [];
-            currentMatchIndex = 0;
-            
-            updateRoundTitle();
-            displayMatch();
-        }
-        
-        // 이벤트 리스너 추가
-        candidate1El.addEventListener('click', () => selectWinner(0));
-        candidate2El.addEventListener('click', () => selectWinner(1));
-
-        // 게임 시작
-        window.onload = () => {
-             matchUpEl.classList.add('opacity-0');
-             setTimeout(startGame, 500);
+        card1.onclick = () => {
+            nextRoundCandidates.push(candidate1);
+            roundIndex += 2;
+            updateUI();
         };
-    </script>
+
+        card2.onclick = () => {
+            nextRoundCandidates.push(candidate2);
+            roundIndex += 2;
+            updateUI();
+        };
+    }
+
+    function showWinner(winner) {
+        gameContainerEl.classList.add('hidden');
+        vsTextEl.classList.add('hidden');
+        titleEl.classList.add('hidden');
+        resultContainerEl.classList.remove('hidden');
+
+        winnerImage.src = winner.image;
+        winnerName.innerText = winner.name;
+    }
+
+    function startGame() {
+        // Shuffle the candidates to make it a new game each time
+        roundCandidates = [...candidates].sort(() => Math.random() - 0.5);
+        nextRoundCandidates = [];
+        currentRound = candidates.length;
+        roundIndex = 0;
+
+        titleEl.innerText = `핑구 이상형 월드컵 (${currentRound}강)`;
+        gameContainerEl.classList.remove('hidden');
+        vsTextEl.classList.remove('hidden');
+        titleEl.classList.remove('hidden');
+        resultContainerEl.classList.add('hidden');
+
+        updateUI();
+    }
+
+    // Start the game on page load
+    window.onload = startGame;
+
+</script>
+
 </body>
 </html>
