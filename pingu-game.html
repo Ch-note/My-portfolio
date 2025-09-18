@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>핑구 이상형 월드컵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Jua', sans-serif;
+        }
+        .vs-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            border: 4px solid white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        .candidate-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .candidate-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+        }
+        .winner-card {
+            animation: winner-pop 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+        @keyframes winner-pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+
+    <div id="game-container" class="w-full max-w-4xl text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2 text-yellow-300">🐧 핑구 이상형 월드컵 🐧</h1>
+        <h2 id="round-title" class="text-2xl md:text-3xl mb-8 text-gray-300">준비...</h2>
+
+        <!-- 게임 진행 화면 -->
+        <div id="match-up" class="relative grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- 참가자 1 -->
+            <div id="candidate-1" class="candidate-card bg-gray-800 rounded-2xl p-4 border-4 border-transparent">
+                <!-- 
+                    TODO: 여기에 첫 번째 참가자 이미지 추가
+                    예시: <img src="pingu.jpg" alt="핑구" class="w-full h-64 md:h-96 object-cover rounded-lg mb-4">
+                -->
+                <div id="image-1" class="w-full h-64 md:h-96 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
+                    이미지 1
+                </div>
+                <p id="name-1" class="text-2xl font-semibold">참가자 1</p>
+            </div>
+
+            <!-- VS 표시 -->
+            <div class="vs-circle hidden md:flex">VS</div>
+            
+            <!-- 참가자 2 -->
+            <div id="candidate-2" class="candidate-card bg-gray-800 rounded-2xl p-4 border-4 border-transparent">
+                 <!-- 
+                    TODO: 여기에 두 번째 참가자 이미지 추가
+                    예시: <img src="pinga.jpg" alt="핑가" class="w-full h-64 md:h-96 object-cover rounded-lg mb-4">
+                -->
+                <div id="image-2" class="w-full h-64 md:h-96 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-400">
+                    이미지 2
+                </div>
+                <p id="name-2" class="text-2xl font-semibold">참가자 2</p>
+            </div>
+        </div>
+
+        <!-- 최종 우승 화면 -->
+        <div id="winner-screen" class="hidden text-center">
+            <h2 class="text-4xl font-bold text-yellow-400 mb-6">🏆 최종 우승! 🏆</h2>
+            <div class="inline-block winner-card bg-gray-800 rounded-2xl p-6 border-4 border-yellow-400 shadow-lg">
+                <!-- 
+                    TODO: 여기에 우승자 이미지 표시
+                    자바스크립트가 자동으로 설정하지만, 필요시 수정
+                -->
+                <div id="winner-image" class="w-64 h-64 md:w-96 md:h-96 bg-gray-700 rounded-lg mb-4 mx-auto flex items-center justify-center text-gray-400">
+                    우승자 이미지
+                </div>
+                <p id="winner-name" class="text-3xl font-bold">우승자 이름</p>
+            </div>
+            <button onclick="location.reload()" class="mt-8 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform duration-200 hover:scale-105">
+                다시 시작하기
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- 데이터 설정 ---
+        // TODO: 참가자 목록을 수정하세요. name은 표시될 이름, id는 이미지 파일명과 연결하면 편리합니다.
+        const initialCandidates = [
+            { id: 'pingu', name: '핑구' },
+            { id: 'pinga', name: '핑가' },
+            { id: 'robby', name: '로비' },
+            { id: 'pingi', name: '핑기' },
+            { id: 'pingo', name: '핑고' },
+            { id: 'grandpa', name: '할아버지' },
+            { id: 'mom', name: '엄마' },
+            { id: 'dad', name: '아빠' },
+            // 16강을 위해 8명 더 추가 (원하는 캐릭터로 변경하세요)
+            { id: 'teacher', name: '선생님' },
+            { id: 'doctor', name: '의사 선생님' },
+            { id: 'postman', name: '우체부 아저씨' },
+            { id: 'yeti', name: '설인' },
+            { id: 'crab', name: '게' },
+            { id: 'penguin1', name: '이웃 펭귄' },
+            { id: 'penguin2', name: '친구 펭귄' },
+            { id: 'walrus', name: '바다코끼리' },
+        ];
+
+        let currentRoundCandidates = [];
+        let winners = [];
+        let currentMatchIndex = 0;
+        let totalRounds = 0;
+
+        const roundTitleEl = document.getElementById('round-title');
+        const matchUpEl = document.getElementById('match-up');
+        const candidate1El = document.getElementById('candidate-1');
+        const candidate2El = document.getElementById('candidate-2');
+        const name1El = document.getElementById('name-1');
+        const name2El = document.getElementById('name-2');
+        const image1El = document.getElementById('image-1');
+        const image2El = document.getElementById('image-2');
+
+        const winnerScreenEl = document.getElementById('winner-screen');
+        const winnerNameEl = document.getElementById('winner-name');
+        const winnerImageEl = document.getElementById('winner-image');
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        function getImagePath(id) {
+            // TODO: 이미지 경로를 설정하세요. 
+            // 예를 들어 'images' 폴더에 'pingu.png' 처럼 저장했다면
+            // return `images/${id}.png`;
+            return `https://placehold.co/400x600/374151/E5E7EB?text=${id}`;
+        }
+
+        function displayMatch() {
+            if (currentMatchIndex >= currentRoundCandidates.length) {
+                startNextRound();
+                return;
+            }
+
+            const candidate1 = currentRoundCandidates[currentMatchIndex];
+            const candidate2 = currentRoundCandidates[currentMatchIndex + 1];
+
+            name1El.textContent = candidate1.name;
+            name2El.textContent = candidate2.name;
+            
+            // 이미지 업데이트 (플레이스홀더 사용)
+            image1El.style.backgroundImage = `url(${getImagePath(candidate1.id)})`;
+            image1El.style.backgroundSize = 'cover';
+            image1El.style.backgroundPosition = 'center';
+            image1El.textContent = ''; // 이미지 로딩되면 텍스트 제거
+            
+            image2El.style.backgroundImage = `url(${getImagePath(candidate2.id)})`;
+            image2El.style.backgroundSize = 'cover';
+            image2El.style.backgroundPosition = 'center';
+            image2El.textContent = '';
+
+            matchUpEl.classList.remove('opacity-0');
+        }
+
+        function selectWinner(selectedIndex) {
+            matchUpEl.classList.add('opacity-0');
+            
+            const winner = currentRoundCandidates[currentMatchIndex + selectedIndex];
+            winners.push(winner);
+            
+            currentMatchIndex += 2;
+
+            setTimeout(() => {
+                displayMatch();
+            }, 400); // fade out 시간
+        }
+        
+        function startNextRound() {
+            if (winners.length === 1) {
+                displayWinner();
+                return;
+            }
+
+            currentRoundCandidates = shuffle([...winners]);
+            winners = [];
+            currentMatchIndex = 0;
+            totalRounds = currentRoundCandidates.length;
+
+            updateRoundTitle();
+            displayMatch();
+        }
+
+        function updateRoundTitle() {
+            if (totalRounds === 2) {
+                roundTitleEl.textContent = "대망의 결승전!";
+            } else if (totalRounds === 4) {
+                roundTitleEl.textContent = "준결승 (4강)";
+            } else {
+                roundTitleEl.textContent = `${totalRounds}강`;
+            }
+        }
+        
+        function displayWinner() {
+            const finalWinner = winners[0];
+            
+            winnerNameEl.textContent = finalWinner.name;
+            winnerImageEl.style.backgroundImage = `url(${getImagePath(finalWinner.id)})`;
+            winnerImageEl.style.backgroundSize = 'cover';
+            winnerImageEl.style.backgroundPosition = 'center';
+            winnerImageEl.textContent = '';
+
+            document.getElementById('game-container').innerHTML = winnerScreenEl.innerHTML;
+        }
+
+        function startGame() {
+            currentRoundCandidates = shuffle([...initialCandidates]);
+            totalRounds = currentRoundCandidates.length;
+            winners = [];
+            currentMatchIndex = 0;
+            
+            updateRoundTitle();
+            displayMatch();
+        }
+        
+        // 이벤트 리스너 추가
+        candidate1El.addEventListener('click', () => selectWinner(0));
+        candidate2El.addEventListener('click', () => selectWinner(1));
+
+        // 게임 시작
+        window.onload = () => {
+             matchUpEl.classList.add('opacity-0');
+             setTimeout(startGame, 500);
+        };
+    </script>
+</body>
+</html>
